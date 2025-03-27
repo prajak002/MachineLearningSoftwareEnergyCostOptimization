@@ -1,0 +1,7 @@
+Machine Learning Energy Efficiency Report
+=========================================
+
+Total Runs: 1
+Average Training Time: 8.573732852935791
+Average Energy Consumption: 3.5439407104000002
+Average Accuracy: 0.991

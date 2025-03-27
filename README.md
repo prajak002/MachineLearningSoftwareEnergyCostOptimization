@@ -1,6 +1,9 @@
+![evaluation_loss_vs_iteration](./images/gsoc.png)
 # Machine Learning Software Cost Optimization
 
 This project focuses on optimizing the computational cost of machine learning (ML) workflows by profiling energy consumption, memory usage, and execution time using **CodeCarbon, TensorBoard Profiling, Memory Profiler, and SnakeViz**.
+
+
 
 ## Features
 - **Carbon Emission Tracking**: Monitors energy consumption using `codecarbon`
