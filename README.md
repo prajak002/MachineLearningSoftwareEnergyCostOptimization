@@ -146,7 +146,7 @@ drive.mount('/content/drive')
 
 ## 9. Profiling in Action: Demo Screenshots
 ![Tensorboard profiling](./images/memory_usage_while_training.png)
-![CodeCarbon Report](./images/memory_usage_while_training.png)
+![CodeCarbon Report](./images/tensorboard_bias_histogram.png)
 ![TensorBoard Profiling](./images/tensorboard_epoch_accuracy.png)
 ![evaluation_loss_vs_iteration](./images/evaluation_loss%20_vs%20_iteration.png)
 
