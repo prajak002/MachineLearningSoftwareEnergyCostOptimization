@@ -43,7 +43,7 @@
        optimizer=tf.lite.Optimize.DEFAULT
    ).convert(model)
    ```
-   ![evaluation_loss_vs_iteration](./images/gsoc5.jpg)
+   
 
 # Deep Q-Learning for Energy-Efficient Machine Learning
 
@@ -70,10 +70,13 @@ As shown in images 4 and 5, our Q-learning implementation follows this structure
    - Dynamic resource allocation decisions
    - Model precision adjustments
 
+
 3. **Reward Function**:
    - Primary reward: Accuracy/Energy consumption ratio
    - Penalties for exceeding energy thresholds
    - Bonuses for maintaining accuracy above target thresholds
+   ![evaluation_loss_vs_iteration](./images/gsoc2.jpg)
+
 
 ### Deep Q-Network Architecture
 
@@ -105,6 +108,7 @@ class DQN(nn.Module):
    - Initial exploration rate: 1.0
    - Final exploration rate: 0.01
    - Decay factor: 0.995
+   
 
 3. **Optimization**:
    ```python
@@ -133,7 +137,7 @@ class DQN(nn.Module):
        loss.backward()
        optimizer.step()
    ```
-
+![evaluation_loss_vs_iteration](./images/gsoc7.png)
 ## Energy Optimization Applications
 
 Our deep Q-learning algorithm makes real-time decisions to optimize energy usage:
@@ -374,6 +378,10 @@ drive.mount('/content/drive')
 ![CodeCarbon Report](./images/tensorboard_bias_histogram.png)
 ![TensorBoard Profiling](./images/tensorboard_epoch_accuracy.png)
 ![evaluation_loss_vs_iteration](./images/evaluation_loss%20_vs%20_iteration.png)
+![evaluation_loss_vs_iteration](./images/gsoc5.jpg)
+
+
+
 
 ## 10. Contribution
 If you’d like to contribute:
