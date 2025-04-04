@@ -1,4 +1,5 @@
 ![evaluation_loss_vs_iteration](./images/gsoc.png)
+
 # Machine Learning Software Cost Optimization
 ```markdown
 # Energy Efficiency Analysis in ML for Particle Physics
@@ -9,9 +10,9 @@
 - **Non-linear Relationship**: Performance gains (accuracy/time) typically require exponential energy increases
 - **Framework Variance**: TensorFlow showed 18% better energy/accuracy ratio vs. PyTorch in our benchmarks
 - **Hardware Dependency**: GPU acceleration reduced energy costs by 3-5× while maintaining performance
+![evaluation_loss_vs_iteration](./images/energy_saved_withdnq.png)
 
 ### Analysis:
-![Performance-Energy Tradeoff](https://raw.githubusercontent.com/yourusername/energy-ml-physics/main/images/tradeoff.png)
 
 | Metric               | TensorFlow | PyTorch |
 |----------------------|------------|---------|
@@ -42,31 +43,152 @@
        optimizer=tf.lite.Optimize.DEFAULT
    ).convert(model)
    ```
+   ![evaluation_loss_vs_iteration](./images/gsoc5.jpg)
 
-3. **Job Scheduling**: Intelligent batching reduced total energy by 31% in simulation
+# Deep Q-Learning for Energy-Efficient Machine Learning
 
----
+## Q-Learning Overview
 
-## 3. Architectural & System Variations
+Q-learning is a model-free reinforcement learning algorithm that learns the value of actions in states by navigating an environment and receiving rewards. In the context of energy-efficient machine learning, we use Q-learning to optimize resource allocation and model configuration decisions.
 
-### Computing Architectures:
-| Architecture | Energy/Job (Wh) | Relative Efficiency |
-|--------------|------------------|---------------------|
-| CPU-only     | 23.4             | 1.0×                | 
-| GPU-accelerated | 5.1          | 4.6×                |
-| TPU-cluster  | 3.7              | 6.3×                |
+## Implementation in Our Green ML Project
 
-### Job Submission Systems:
-| System         | Energy Overhead | Batch Efficiency |
-|----------------|------------------|------------------|
-| Slurm          | 8%               | 92%              |
-| Kubernetes     | 12%              | 88%              |
-| Custom HTCondor| 5%               | 95%              |
+### Core Algorithm
+
+As shown in images 4 and 5, our Q-learning implementation follows this structure:
+
+1. **State Representation**: 
+   - Server temperature
+   - Number of active users
+   - Rate of data processing
+   - Current energy consumption
+
+2. **Action Space**:
+   - Action 1: Reduce temperature by 1.5°C
+   - Action 2: Maintain current state (0 change)
+   - Action 3: Increase temperature by 1.5°C
+   - Dynamic resource allocation decisions
+   - Model precision adjustments
+
+3. **Reward Function**:
+   - Primary reward: Accuracy/Energy consumption ratio
+   - Penalties for exceeding energy thresholds
+   - Bonuses for maintaining accuracy above target thresholds
+
+### Deep Q-Network Architecture
+
+We extended traditional Q-learning to Deep Q-Learning (DQN) by implementing:
+
+```python
+class DQN(nn.Module):
+    def __init__(self, state_dim, action_dim):
+        super(DQN, self).__init__()
+        self.fc1 = nn.Linear(state_dim, 128)
+        self.fc2 = nn.Linear(128, 128)
+        self.fc3 = nn.Linear(128, action_dim)
+        
+    def forward(self, x):
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        return self.fc3(x)
+```
+
+### Training Process
+
+1. **Experience Replay**:
+   - Store transitions (state, action, reward, next_state) in replay memory
+   - Randomly sample batches to break correlations between consecutive samples
+   - Update Q-values using the Bellman equation
+
+2. **Exploration Strategy**:
+   - ε-greedy policy with decay
+   - Initial exploration rate: 1.0
+   - Final exploration rate: 0.01
+   - Decay factor: 0.995
+
+3. **Optimization**:
+   ```python
+   def optimize_model():
+       if len(memory) < BATCH_SIZE:
+           return
+       transitions = memory.sample(BATCH_SIZE)
+       batch = Transition(*zip(*transitions))
+       
+       state_batch = torch.cat(batch.state)
+       action_batch = torch.cat(batch.action)
+       reward_batch = torch.cat(batch.reward)
+       
+       # Get Q values
+       current_q_values = policy_net(state_batch).gather(1, action_batch)
+       
+       # Compute target Q values
+       next_state_values = target_net(next_states_batch).max(1)[0].detach()
+       expected_q_values = reward_batch + (GAMMA * next_state_values)
+       
+       # Compute loss
+       loss = F.smooth_l1_loss(current_q_values, expected_q_values.unsqueeze(1))
+       
+       # Optimize the model
+       optimizer.zero_grad()
+       loss.backward()
+       optimizer.step()
+   ```
+
+## Energy Optimization Applications
+
+Our deep Q-learning algorithm makes real-time decisions to optimize energy usage:
+
+1. **Dynamic Temperature Control**:
+   - Adjusts server temperature based on workload and energy consumption
+   - Learned optimal temperature ranges for different computational loads
+
+2. **Computational Resource Allocation**:
+   - Scales computing resources up/down based on batch size and model complexity
+   - Prioritizes energy-efficient hardware when available
+
+3. **Model Precision Adaptation**:
+   - Dynamically switches between FP32, FP16, and INT8 precision
+   - Balances accuracy requirements with energy consumption
+
+4. **Scheduler Optimization**:
+   - Learns optimal times for heavy computational tasks
+   - Batches operations to minimize idle energy consumption
+
+## Performance Results
+
+As evidenced in our performance metrics, the deep Q-learning approach resulted in:
+
+1. **Framework-Specific Optimizations**:
+   - TensorFlow: 46% reduction in CO₂ emissions with only 0.8% accuracy drop
+   - PyTorch: 44% reduction in CO₂ emissions with only 0.6% accuracy drop
+
+2. **Latency Improvements**:
+   - 47% reduction in inference latency for TensorFlow
+   - 43% reduction in inference latency for PyTorch
+
+3. **Adaptive Behavior**:
+   - System automatically adjusts to changing conditions
+   - Continuous improvement through online learning
+
+## Future Work
+
+1. **Multi-Agent Reinforcement Learning**:
+   - Distributed optimization across multiple training nodes
+   - Collaborative resource sharing
+
+2. **Meta-Learning for Initialization**:
+   - Pre-trained policies for faster adaptation to new hardware
+   - Transfer learning between different model architectures
+
+3. **Hardware-Aware Optimization**:
+   - Deeper integration with specific accelerator characteristics
+   - Dynamic frequency and voltage scaling
 
 ### Key Determinants:
-1. **Memory Hierarchy Utilization**: 
-   - Optimal cache reuse reduced energy by 17%
-   - NVMe storage showed 29% lower I/O energy vs HDD
+1. **Memory  Utilization**: 
+![evaluation_loss_vs_iteration](./images/memory_usage_while_training.png)
+![evaluation_loss_vs_iteration](./images/tensorboard_epoch_accuracy.png)
+ 
 
 2. **Thermal Management**:
    ```python
@@ -78,6 +200,7 @@
 3. **Network Topology**:
    - Fat-tree networks reduced communication energy by 38%
    - RDMA protocols saved 22% energy in data transfers
+   ![evaluation_loss_vs_iteration](./images/gsoc6.jpg)
 
 ## Conclusion Matrix
 | Improvement Type | Performance Impact | Energy Savings | LHC-scale Impact |
@@ -180,7 +303,10 @@ def train_with_profiling():
     ps = pstats.Stats(pr, stream=s).sort_stats('cumulative')
     ps.print_stats()
     return history, emissions, mem_usage, s.getvalue()
+
 ```
+![evaluation_loss_vs_iteration](./images/gsoc2.jpg)
+![evaluation_loss_vs_iteration](./images/gsoc3.jpg)
 
 ### Execute Training
 ```python
@@ -219,6 +345,7 @@ with open('energy_report.txt', 'w') as f:
     f.write(f"Peak Memory Usage: {max(mem_usage)} MB\n")
     f.write("\nProfile Stats:\n")
     f.write(profile_report)
+
 ```
 
 ## 7. Advanced Profiling (Optional)
