@@ -2,17 +2,17 @@
 
 # Machine Learning Software Cost Optimization
 ```markdown
-# Energy Efficiency Analysis in ML for Particle Physics
+Energy Efficiency Analysis in ML for Particle Physics
 
-## 1. Performance vs. Energy Efficiency Trade-off
+ 1. Performance vs. Energy Efficiency Trade-off
 
-### Key Findings:
-- **Non-linear Relationship**: Performance gains (accuracy/time) typically require exponential energy increases
-- **Framework Variance**: TensorFlow showed 18% better energy/accuracy ratio vs. PyTorch in our benchmarks
-- **Hardware Dependency**: GPU acceleration reduced energy costs by 3-5× while maintaining performance
+ Key Findings:
+- Non-linear Relationship: Performance gains (accuracy/time) typically require exponential energy increases
+- Framework Variance: TensorFlow showed 18% better energy/accuracy ratio vs. PyTorch in our benchmarks
+- Hardware Dependency: GPU acceleration reduced energy costs by 3-5× while maintaining performance
 ![evaluation_loss_vs_iteration](./images/energy_saved_withdnq.png)
 
-### Analysis:
+Analysis:
 
 | Metric               | TensorFlow | PyTorch |
 |----------------------|------------|---------|
@@ -20,23 +20,23 @@
 | Energy/Accuracy (Wh) | 0.18       | 0.22    |
 | CO₂/Inference (mg)   | 42         | 51      |
 
-**Implications**: Optimized batch processing and model compression can achieve <5% accuracy loss with 30-50% energy savings
+Implications: Optimized batch processing and model compression can achieve <5% accuracy loss with 30-50% energy savings
 
 ---
 
-## 2. Efficiency Impact at LHC Scale
+2. Efficiency Impact at LHC Scale
 
-### Scaling Analysis:
-- **Base Case**: 1M jobs/day at 15 Wh/job → 15 MWh/day (≈7.5 tons CO₂/day)
-- **5% Efficiency Gain**: Saves 750 kWh/day (≈375 kg CO₂/day)
-- **Architectural Optimizations**: Model quantization reduced energy/job by 22% in prototype tests
+ Scaling Analysis:
+- Base Case: 1M jobs/day at 15 Wh/job → 15 MWh/day (≈7.5 tons CO₂/day)
+- 5% Efficiency Gain: Saves 750 kWh/day (≈375 kg CO₂/day)
+- Architectural Optimizations: Model quantization reduced energy/job by 22% in prototype tests
 
-### Critical Factors:
-1. **Data Pipeline Efficiency**: 
+ Critical Factors:
+1. Data Pipeline Efficiency: 
    - Compressed data formats reduced I/O energy by 40%
    - Cache-aware processing lowered memory energy by 18%
 
-2. **Algorithm Selection**:
+2. Algorithm Selection:
    ```python
    # Energy-efficient inference example
    quantized_model = tf.lite.TFLiteConverter(
@@ -45,7 +45,7 @@
    ```
    
 
-# Deep Q-Learning for Energy-Efficient Machine Learning
+Deep Q-Learning for Energy-Efficient Machine Learning
 
 ## Q-Learning Overview
 
@@ -57,7 +57,7 @@ Q-learning is a model-free reinforcement learning algorithm that learns the valu
 
 As shown in images 4 and 5, our Q-learning implementation follows this structure:
 
-1. **State Representation**: 
+1. State Representation: 
    - Server temperature
    - Number of active users
    - Rate of data processing
