@@ -1,7 +1,7 @@
 ![evaluation_loss_vs_iteration](./images/gsoc.png)
 
 # Machine Learning Software Cost Optimization
-```markdown
+
 Energy Efficiency Analysis in ML for Particle Physics
 
  1. Performance vs. Energy Efficiency Trade-off
@@ -22,7 +22,6 @@ Analysis:
 
 Implications: Optimized batch processing and model compression can achieve <5% accuracy loss with 30-50% energy savings
 
----
 
 2. Efficiency Impact at LHC Scale
 
@@ -42,6 +41,7 @@ Implications: Optimized batch processing and model compression can achieve <5% a
    quantized_model = tf.lite.TFLiteConverter(
        optimizer=tf.lite.Optimize.DEFAULT
    ).convert(model)
+
    ```
    
 
